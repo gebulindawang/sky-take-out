@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-
+@SuppressWarnings("all")
 /**
  * 分类管理
  */
@@ -76,6 +76,7 @@ public class CategoryController {
         return Result.success();
     }
 
+    
     /**
      * 启用、禁用分类
      * @param status
@@ -88,6 +89,7 @@ public class CategoryController {
         categoryService.startOrStop(status,id);
         return Result.success();
     }
+
 
     /**
      * 根据类型查询分类
