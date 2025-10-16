@@ -125,4 +125,17 @@ public class DishServiceImpl implements DishService {
         }
 
     }
+
+    /**
+     * 根据id查询套餐
+     * @param setmealPageQueryDTO
+     * @return
+     */
+    public List<Dish> getById(Long categoryId) {
+        Dish dish = Dish.builder()
+                .categoryId(categoryId)
+                .status(StatusConstant.ENABLE)
+                .build();
+        return dishMapper.list(dish);
+    }
 }
