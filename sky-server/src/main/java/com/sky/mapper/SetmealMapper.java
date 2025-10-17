@@ -9,6 +9,8 @@ import com.sky.entity.SetmealDish;
 import com.sky.enumeration.OperationType;
 import com.sky.result.PageResult;
 import com.sky.vo.SetmealVO;
+import lombok.Data;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -52,4 +54,7 @@ public interface SetmealMapper {
 
     @AutoFill(value = OperationType.UPDATE)
     void update(Setmeal setmeal);
+
+    @Delete("delete  from setmeal_dish where setmeal_id = #{id}")
+    void deleteBatchWithDish(Long id);
 }
