@@ -12,4 +12,7 @@ public interface SetMealDishMapper {
      * @return
      */
     List<Long> getSetMealIdsByDishIds(List<Long> dishIds);
+
+
+    void deleteBatchWithDish(List<Long> ids);
 }

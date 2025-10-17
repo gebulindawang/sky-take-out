@@ -2,6 +2,7 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.constant.MessageConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
@@ -9,6 +10,8 @@ import com.sky.entity.Dish;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
 import com.sky.enumeration.OperationType;
+import com.sky.exception.DeletionNotAllowedException;
+import com.sky.mapper.SetMealDishMapper;
 import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
 import com.sky.service.SetMealService;
@@ -30,6 +33,8 @@ public class SetMealServiceImpl implements SetMealService {
 
     @Autowired
     private SetmealMapper setmealMapper;
+    @Autowired
+    private SetMealDishMapper setMealDishMapper;
 
     /**
      * 新增套餐
@@ -64,5 +69,58 @@ public class SetMealServiceImpl implements SetMealService {
 
 
         return new PageResult(page.getTotal(),page.getResult());
+    }
+
+
+    /**
+     * 批量起售停售
+     * @param status
+     * @param ids
+     */
+    public void startOrStop(Integer status, Long id) {
+        setmealMapper.startOrStop(status,id);
+    }
+
+    /**
+     * 批量删除
+     * @param ids
+     */
+    public void deleteBatch(List<Long> ids) {
+        if (ids == null || ids.size() == 0) {
+            throw new DeletionNotAllowedException("请选择你要删除的套餐");
+        }
+
+        for (Long id : ids) {
+            Setmeal setmeal = setmealMapper.getStatusById(id);
+            if (setmeal.getStatus() == StatusConstant.ENABLE){
+                throw new DeletionNotAllowedException(MessageConstant.SETMEAL_ON_SALE);
+            }
+        }
+
+        setmealMapper.deleteBatchSetmeal(ids);
+        setMealDishMapper.deleteBatchWithDish(ids);
+    }
+
+    /**
+     * 根据id查询套餐
+     * @param id
+     * @return
+     */
+    public SetmealVO getById(Long id) {
+        SetmealVO setmealVO = setmealMapper.getById(id);
+        List<SetmealDish> dishes = setmealMapper.getByIdWithDishes(id);
+        log.info("taocan{}",dishes);
+        setmealVO.setSetmealDishes(dishes);
+        return setmealVO;
+    }
+
+    /**
+     * 修改套餐
+     * @param setmealDTO
+     */
+    public void update(SetmealDTO setmealDTO) {
+        Setmeal setmeal = new Setmeal();
+        BeanUtils.copyProperties(setmealDTO,setmeal);
+       setmealMapper.update(setmeal);
     }
 }

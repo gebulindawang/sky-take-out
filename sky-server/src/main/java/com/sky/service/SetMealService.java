@@ -17,4 +17,12 @@ public interface SetMealService {
     void saveWithDish(SetmealDTO setmealDTO);
 
     PageResult pageQuery(SetmealPageQueryDTO setmealPageQueryDTO);
+
+    void startOrStop(Integer status, Long id);
+
+    void deleteBatch(List<Long> ids);
+
+    SetmealVO getById(Long id);
+
+    void update(SetmealDTO setmealDTO);
 }
