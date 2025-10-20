@@ -27,7 +27,7 @@ import java.util.List;
 
 @SuppressWarnings("all")
 
-@Slf4j
+
 @Service
 public class SetMealServiceImpl implements SetMealService {
 
@@ -109,7 +109,6 @@ public class SetMealServiceImpl implements SetMealService {
     public SetmealVO getById(Long id) {
         SetmealVO setmealVO = setmealMapper.getById(id);
         List<SetmealDish> dishes = setmealMapper.getByIdWithDishes(id);
-        log.info("taocan{}",dishes);
         setmealVO.setSetmealDishes(dishes);
         return setmealVO;
     }
@@ -124,6 +123,8 @@ public class SetMealServiceImpl implements SetMealService {
         BeanUtils.copyProperties(setmealDTO,setmeal);
        setmealMapper.update(setmeal);
        setmealMapper.deleteBatchWithDish(setmealDTO.getId());
-       setmealMapper.insertWithDish(setmealDTO.getSetmealDishes());
+        List<SetmealDish> setmealDishes = setmealDTO.getSetmealDishes();
+        setmealDishes.forEach(setmealDish -> setmealDish.setSetmealId(setmealDTO.getId()));
+        setmealMapper.insertWithDish(setmealDishes);
     }
 }

@@ -55,6 +55,7 @@ public interface SetmealMapper {
     @AutoFill(value = OperationType.UPDATE)
     void update(Setmeal setmeal);
 
-    @Delete("delete  from setmeal_dish where setmeal_id = #{id}")
+    @Delete("delete from setmeal_dish where setmeal_id = #{id}")
     void deleteBatchWithDish(Long id);
+
 }

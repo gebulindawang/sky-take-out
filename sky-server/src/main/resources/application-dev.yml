@@ -11,3 +11,6 @@ sky:
     access-key-id: LTAI5t8fvbSRk6TxwcsYKY6Q
     access-key-secret: 5Cx4iQWrbTjcMP6KR6qATAFfV0vCil
     bucket-name: skt-out2222
+  redis:
+    host: localhost
+    port: 6379

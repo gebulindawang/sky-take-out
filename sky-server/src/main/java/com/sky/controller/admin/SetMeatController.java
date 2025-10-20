@@ -79,6 +79,7 @@ public class SetMeatController {
     @PutMapping
     @ApiOperation("修改菜单")
     public Result update(@RequestBody SetmealDTO setmealDTO){
+        log.info("修改的套餐{}",setmealDTO);
         setMealService.update(setmealDTO);
         return Result.success();
     }
